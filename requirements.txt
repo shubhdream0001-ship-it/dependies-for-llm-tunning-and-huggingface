@@ -1,0 +1,99 @@
+
+# ==========================================
+# Google Colab - ML / LLM Fine-tuning
+# Python 3.11 or 3.12
+# ==========================================
+
+# PyTorch CUDA 12.6
+--extra-index-url https://download.pytorch.org/whl/cu126
+torch==2.7.0+cu126
+torchvision==0.22.0+cu126
+
+# Hugging Face ecosystem
+transformers==4.57.6
+huggingface-hub==0.36.2
+tokenizers==0.22.2
+peft==0.19.1
+trl==0.29.1
+accelerate==1.12.0
+datasets==4.4.1
+
+# Quantization
+bitsandbytes==0.49.2
+
+# Evaluation
+evaluate==0.4.6
+seqeval==1.2.2
+scikit-learn==1.9.0
+
+# Data visualization
+seaborn==0.13.2
+umap-learn==0.5.6
+
+# Audio and tokenization
+soundfile==0.12.1
+sentencepiece==0.2.1
+
+# Utilities
+numpy
+pandas
+scipy
+matplotlib
+safetensors
+protobuf
+```
+ 
+## 2. Install in Google Colab
+
+Install PyTorch separately first, to avoid accidentally replacing your CUDA build:
+
+```python
+!pip install --index-url https://download.pytorch.org/whl/cu126 \
+    torch==2.7.0+cu126 torchvision==0.22.0+cu126
+```
+
+Then install your requirements:
+
+```python
+!pip install -r requirements.txt
+```
+
+**Important:** The file above is a starting environment specification, not a guarantee that every package combination has been tested together. In particular, verify the PEFT and TRL combination with your actual training code.
+
+## 3. Verify the environment
+
+After installation, restart the Colab runtime and run:
+
+```python
+import torch
+import transformers
+import peft
+import trl
+import bitsandbytes
+import huggingface_hub
+
+print("Torch:", torch.__version__)
+print("CUDA:", torch.cuda.is_available())
+print("Transformers:", transformers.__version__)
+print("PEFT:", peft.__version__)
+print("TRL:", trl.__version__)
+print("BitsAndBytes:", bitsandbytes.__version__)
+print("Hub:", huggingface_hub.__version__)
+```
+
+Then:
+
+```python
+!pip check
+```
+
+## 4. Important notes
+
+- I recommend keeping `torch` and `torchvision` in a separate installation step, rather than inside the requirements file.
+- Don't add `gradio`, `gradio-client`, or `diffusers` unless your project needs them.
+- Let pip resolve supporting packages such as Accelerate and Datasets rather than guessing their versions.
+- Your Transformers 4.57.6 installation requires a compatible Hub version. See the [Transformers installation documentation](https://huggingface.co/docs/transformers/v4.57.0/installation). <Cite refs={["turn391913search0","turn391913search3"]}/>
+
+**One final recommendation:** Keep this requirements file in your project folder and use it whenever you recreate the environment.
+
+This will make your Colab LLM fine-tuning setup much easier to reproduce.
